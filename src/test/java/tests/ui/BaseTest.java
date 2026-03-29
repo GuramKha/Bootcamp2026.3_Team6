@@ -1,9 +1,13 @@
 package tests.ui;
 
 import com.microsoft.playwright.*;
+import io.qameta.allure.Allure;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class BaseTest {
@@ -35,6 +39,36 @@ public class BaseTest {
                 .setViewportSize(1920, 1080));
 
         page = browserContext.newPage();
+    }
+
+    @AfterMethod
+    public void captureOnFailure(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            byte[] screenshot = page.screenshot(
+                    new Page.ScreenshotOptions().setFullPage(true)
+            );
+
+            Allure.addAttachment(
+                    "Screenshot - " + result.getName(),
+                    "image/png",
+                    new ByteArrayInputStream(screenshot),
+                    "png"
+            );
+
+            Allure.addAttachment(
+                    "Page HTML - " + result.getName(),
+                    "text/html",
+                    new ByteArrayInputStream(page.content().getBytes()),
+                    "html"
+            );
+
+            Allure.addAttachment(
+                    "Failed URL - " + result.getName(),
+                    "text/plain",
+                    new ByteArrayInputStream(page.url().getBytes()),
+                    "txt"
+            );
+        }
     }
 
     @AfterClass
