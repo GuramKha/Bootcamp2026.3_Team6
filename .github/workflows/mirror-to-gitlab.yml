@@ -25,8 +25,13 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
         run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BRANCH="${{ github.head_ref }}"
+          else
+            BRANCH="${GITHUB_REF#refs/heads/}"
+          fi
           git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/final-project-tbc/Bootcamp2026.3_Team6.git
-          git push gitlab HEAD:${GITHUB_REF#refs/heads/}
+          git push gitlab HEAD:${GITHUB_REF#refs/heads/} --force
 
   trigger-gitlab:
     runs-on: ubuntu-latest
