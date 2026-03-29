@@ -1,0 +1,10 @@
+.idea
+target
+.mvn
+out
+*.iml
+build
+allure-results
+user-data-dir
+*.iws
+*.ipr
