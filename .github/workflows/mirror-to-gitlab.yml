@@ -26,7 +26,7 @@ jobs:
           GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
         run: |
           git remote add gitlab https://${GITLAB_USERNAME}:${GITLAB_TOKEN}@gitlab.com/${GITLAB_USERNAME}/Bootcamp2026.3_Team6.git
-          git push gitlab --mirror
+          git push gitlab HEAD:${GITHUB_REF#refs/heads/}
 
   trigger-gitlab:
     runs-on: ubuntu-latest
