@@ -5,13 +5,14 @@
 
     <test name="API Tests" parallel="classes" thread-count="2">
         <classes>
-
         </classes>
     </test>
 
-    <test name="UI Tests" parallel="classes" thread-count="2">
+    <test name="UI Tests" parallel="classes" thread-count="1">
         <classes>
-
+            <class name="tests.ui.RemittanceConversionTest"/>
+            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>
+            <class name="tests.ui.RemittanceCalculationEdgeTest"/>
         </classes>
     </test>
 
