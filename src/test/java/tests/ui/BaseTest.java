@@ -2,7 +2,6 @@ package tests.ui;
 
 import com.microsoft.playwright.*;
 import io.qameta.allure.Allure;
-import net.datafaker.Faker;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -30,7 +29,6 @@ public class BaseTest {
 
         if (isCI) {
             options.setHeadless(true);
-            options.setChannel("chrome");
             options.setArgs(List.of(
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
@@ -42,7 +40,6 @@ public class BaseTest {
 
         switch (platform.toLowerCase()) {
             case "chrome":
-                options.setChannel("chrome");
                 browser = playwright.chromium().launch(options);
                 break;
 
