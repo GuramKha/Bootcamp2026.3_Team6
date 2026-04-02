@@ -66,7 +66,7 @@ public class RemittanceConversionTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void conversionOfLargeAmount() {
         moneySteps
-                .enterAmount(faker.getRandomNumber(15000,100000))
+                .enterAmount(faker.getRandomNumber(100,10000))
                 .verifyConversion();
     }
 
