@@ -25,6 +25,7 @@ public class BaseTest {
 
         if (isCI) {
             options.setHeadless(true);
+            options.setChannel("chrome");
             options.setArgs(List.of(
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
