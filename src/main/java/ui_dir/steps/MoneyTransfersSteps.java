@@ -59,7 +59,10 @@ public class MoneyTransfersSteps {
 
     @Step("Select output currency: {currency}")
     public MoneyTransfersSteps selectCurrencyOutput(String currency) {
-        moneyTransfersPage.currencyItem.filter(new Locator.FilterOptions().setHasText(currency)).click();
+        Locator item = moneyTransfersPage.currencyItem.filter(new Locator.FilterOptions().setHasText(currency));
+
+        item.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        item.click(new Locator.ClickOptions().setForce(true));
 
         return this;
     }
