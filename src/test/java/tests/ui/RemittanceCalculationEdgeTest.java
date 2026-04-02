@@ -50,18 +50,20 @@ public class RemittanceCalculationEdgeTest extends BaseTest {
 
     @Test(priority = 3, description = "Checking the Remittance Fee Calculation to United States for minimum amount")
     @Severity(SeverityLevel.CRITICAL)
-    public void step2_minAmountUSA() {
+    public void minAmountValidation() {
         moneySteps
                 .openRemittanceFeeCalculation()
                 .enterAmount(MIN_INPUT)
+                .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(USD_STRING)
+                .openCountryDropdown()
                 .selectCountry(USA)
                 .verifyProvidersDisplayed();
     }
 
     @Test(priority = 4, description = "Checking the Remittance Fee Calculation to United States for maximum amount")
     @Severity(SeverityLevel.CRITICAL)
-    public void step3_maxAmountUSA() {
+    public void maxAmountValidation() {
         moneySteps
                 .openRemittanceFeeCalculation()
                 .enterAmount(MAX_AMOUNT)

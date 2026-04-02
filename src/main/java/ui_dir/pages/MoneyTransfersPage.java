@@ -22,7 +22,7 @@ public class MoneyTransfersPage {
 
     public MoneyTransfersPage(Page page) {
         this.convertionRate = page.locator(".tbcx-pw-exchange-rates-calculator__description");
-        this.currencyDropDownInput = page.locator("button.tbcx-field").filter(new Locator.FilterOptions().setHasText(USD_STRING));
+        this.currencyDropDownInput = page.locator("button.tbcx-field").first().filter(new Locator.FilterOptions().setHasText(USD_STRING));
         this.currencyDropDownOutput = page.locator("button.tbcx-field").filter(new Locator.FilterOptions().setHasText(GEL_STRING));
         this.currencyItem = page.locator(".tbcx-dropdown-popover-item");
         this.countryDropDown = page.locator(".tbcx-dropdown-selector button.tbcx-field").filter(new Locator.FilterOptions().setHasText(CHOOSE_COUNTRY));

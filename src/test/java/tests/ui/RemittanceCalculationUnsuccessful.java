@@ -53,8 +53,10 @@ public class RemittanceCalculationUnsuccessful extends BaseTest {
     public void remittanceFeeForGreece() {
         moneySteps
                 .openRemittanceFeeCalculation()
+                .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(EUR_STRING)
                 .enterAmount(AMOUNT)
+                .openCountryDropdown()
                 .selectCountry(GREECE)
                 .verifyProvidersDisplayed();
     }

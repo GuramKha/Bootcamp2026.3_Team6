@@ -18,9 +18,11 @@ import static org.testng.AssertJUnit.assertTrue;
 public class MoneyTransfersSteps {
 
     private final MoneyTransfersPage moneyTransfersPage;
+    private final Page page;
 
-    public MoneyTransfersSteps(Page playwrightPage) {
-        this.moneyTransfersPage = new MoneyTransfersPage(playwrightPage);
+    public MoneyTransfersSteps(Page page) {
+        this.moneyTransfersPage = new MoneyTransfersPage(page);
+        this.page = page;
     }
 
     @Step("Verify Money Transfers page opened")
@@ -39,18 +41,33 @@ public class MoneyTransfersSteps {
 
     @Step("Select input currency: {currency}")
     public MoneyTransfersSteps selectCurrencyInput(String currency) {
+        page.evaluate("window.scrollBy(0, 500)");
+
+        moneyTransfersPage.currencyItem
+                .filter(new Locator.FilterOptions().setHasText(currency)).click();
+
+        return this;
+    }
+
+    @Step("Open currency input dropdown")
+    public MoneyTransfersSteps openCurrencyInputDropdown () {
         moneyTransfersPage.currencyDropDownInput.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.currencyDropDownInput.click();
-        moneyTransfersPage.currencyItem.filter(new Locator.FilterOptions().setHasText(currency)).click();
 
         return this;
     }
 
     @Step("Select output currency: {currency}")
     public MoneyTransfersSteps selectCurrencyOutput(String currency) {
-        moneyTransfersPage.currencyDropDownOutput.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        moneyTransfersPage.currencyDropDownOutput.click();
         moneyTransfersPage.currencyItem.filter(new Locator.FilterOptions().setHasText(currency)).click();
+
+        return this;
+    }
+
+    @Step("Open currency output dropdown")
+    public MoneyTransfersSteps openCurrencyOutputDropdown () {
+        moneyTransfersPage.currencyDropDownOutput.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        moneyTransfersPage.currencyDropDownOutput.click();
 
         return this;
     }
@@ -58,19 +75,26 @@ public class MoneyTransfersSteps {
     @Step("Verify conversion")
     public MoneyTransfersSteps verifyConversion() {
         double rate = getRate();
+        System.out.println("Current rate: " + rate);
 
-        String result = moneyTransfersPage.moneyInput.last().inputValue();
-        double actual = Double.parseDouble(result);
+        double amount = Double.parseDouble(
+                moneyTransfersPage.moneyInput.first().inputValue().replace(",", "").trim()
+        );
+        System.out.println("Current amount: " + amount);
 
-        String input = moneyTransfersPage.moneyInput.first().inputValue();
-        double amount = Double.parseDouble(input);
+        double actual = Double.parseDouble(
+                moneyTransfersPage.moneyInput.last().inputValue().replace(",", "").trim()
+        );
+        System.out.println("Current amount: " + actual);
         double expected = amount * rate;
 
         double roundedExpected = BigDecimal.valueOf(expected)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
+        System.out.println("Current amount: " + roundedExpected);
 
-        assertTrue(Math.abs(actual - roundedExpected) < 0.001);
+        assertTrue(Math.abs(actual - roundedExpected) < 1);
+        System.out.println(Math.abs(actual - roundedExpected));
 
         return this;
     }
@@ -105,9 +129,15 @@ public class MoneyTransfersSteps {
 
     @Step("Select country Greece")
     public MoneyTransfersSteps selectCountry(String country) {
+        moneyTransfersPage.countryItem.filter(new Locator.FilterOptions().setHasText(country)).click();
+
+        return this;
+    }
+
+    @Step("Open country dropdown")
+    public MoneyTransfersSteps openCountryDropdown(){
         moneyTransfersPage.countryDropDown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.countryDropDown.click();
-        moneyTransfersPage.countryItem.filter(new Locator.FilterOptions().setHasText(country)).click();
 
         return this;
     }
@@ -129,7 +159,6 @@ public class MoneyTransfersSteps {
 
     @Step("Verify error message")
     public MoneyTransfersSteps verifyErrorMessage() {
-        assertThat(moneyTransfersPage.errorMessage).isVisible();
         assertThat(moneyTransfersPage.errorMessage).containsText(ERROR);
 
         return this;

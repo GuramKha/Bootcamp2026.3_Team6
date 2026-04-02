@@ -54,7 +54,9 @@ public class RemittanceConversionTest extends BaseTest {
     public void conversionGBPToUSD() {
         moneySteps
                 .enterAmount(NORMAL_AMOUNT)
+                .openCurrencyInputDropdown()
                 .selectCurrencyInput(GBP_STRING)
+                .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(USD_STRING)
                 .verifyConversion();
     }
