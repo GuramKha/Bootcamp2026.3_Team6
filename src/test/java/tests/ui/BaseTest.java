@@ -38,23 +38,11 @@ public class BaseTest {
             options.setHeadless(false);
         }
 
-        switch (platform.toLowerCase()) {
-            case "chrome":
-                browser = playwright.chromium().launch(options);
-                break;
-
-            case "firefox":
-                browser = playwright.firefox().launch(options);
-                break;
-
-            case "edge":
-                options.setChannel("msedge");
-                browser = playwright.chromium().launch(options);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported browser: " + browser);
-        }
+        this.browser = switch (platform.toLowerCase()) {
+            case "firefox" -> playwright.firefox().launch(options);
+            case "webkit" -> playwright.webkit().launch(options);
+            default -> playwright.chromium().launch(options);
+        };
 
         browserContext = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080));
