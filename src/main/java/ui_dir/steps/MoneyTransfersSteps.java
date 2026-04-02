@@ -34,6 +34,10 @@ public class MoneyTransfersSteps {
 
     @Step("Enter amount: {amount}")
     public MoneyTransfersSteps enterAmount(String amount) {
+        moneyTransfersPage.moneyInput.first().waitFor(
+                new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
+        );
+        moneyTransfersPage.moneyInput.first().scrollIntoViewIfNeeded();
         moneyTransfersPage.moneyInput.first().fill(amount);
 
         return this;
@@ -41,10 +45,12 @@ public class MoneyTransfersSteps {
 
     @Step("Select input currency: {currency}")
     public MoneyTransfersSteps selectCurrencyInput(String currency) {
-        page.evaluate("window.scrollBy(0, 500)");
+        Locator item = moneyTransfersPage.currencyItem
+                .filter(new Locator.FilterOptions().setHasText(currency));
 
-        moneyTransfersPage.currencyItem
-                .filter(new Locator.FilterOptions().setHasText(currency)).click();
+        item.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        item.scrollIntoViewIfNeeded();
+        item.click();
 
         return this;
     }
