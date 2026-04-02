@@ -55,10 +55,16 @@ generate-allure-report:
     - execute-tests
 
   before_script:
-    - apt-get update -qq && apt-get install -y wget
-    - wget -q https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
-    - tar -xzf allure-2.27.0.tgz -C /opt/
-    - ln -s /opt/allure-2.27.0/bin/allure /usr/local/bin/allure
+    - apt-get update -qq && apt-get install -y wget curl gnupg unzip
+
+    - mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps" -D exec.classpathScope=test
+
+    - mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install" -D exec.classpathScope=test
+
+    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+    - apt-get update -qq && apt-get install -y google-chrome-stable
+    - google-chrome --version
 
   script:
     - |

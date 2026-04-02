@@ -4,6 +4,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import net.datafaker.Faker;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ui_dir.steps.CommonSteps;
@@ -53,7 +54,7 @@ public class RemittanceConversionTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void conversionGBPToUSD() {
         moneySteps
-                .enterAmount(NORMAL_AMOUNT)
+                .enterAmount(faker.getRandomNumber(5000,10000))
                 .openCurrencyInputDropdown()
                 .selectCurrencyInput(GBP_STRING)
                 .openCurrencyOutputDropdown()
@@ -65,7 +66,7 @@ public class RemittanceConversionTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void conversionOfLargeAmount() {
         moneySteps
-                .enterAmount(INCREASED_AMOUNT)
+                .enterAmount(faker.getRandomNumber(15000,100000))
                 .verifyConversion();
     }
 

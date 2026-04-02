@@ -55,7 +55,7 @@ public class RemittanceCalculationUnsuccessful extends BaseTest {
                 .openRemittanceFeeCalculation()
                 .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(EUR_STRING)
-                .enterAmount(AMOUNT)
+                .enterAmount(faker.getRandomNumber(200,500))
                 .openCountryDropdown()
                 .selectCountry(GREECE)
                 .verifyProvidersDisplayed();

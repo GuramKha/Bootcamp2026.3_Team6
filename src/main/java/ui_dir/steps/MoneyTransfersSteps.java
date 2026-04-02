@@ -84,26 +84,21 @@ public class MoneyTransfersSteps {
     @Step("Verify conversion")
     public MoneyTransfersSteps verifyConversion() {
         double rate = getRate();
-        System.out.println("Current rate: " + rate);
 
         double amount = Double.parseDouble(
                 moneyTransfersPage.moneyInput.first().inputValue().replace(",", "").trim()
         );
-        System.out.println("Current amount: " + amount);
 
         double actual = Double.parseDouble(
                 moneyTransfersPage.moneyInput.last().inputValue().replace(",", "").trim()
         );
-        System.out.println("Current amount: " + actual);
         double expected = amount * rate;
 
         double roundedExpected = BigDecimal.valueOf(expected)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
-        System.out.println("Current amount: " + roundedExpected);
 
         assertTrue(Math.abs(actual - roundedExpected) < 1);
-        System.out.println(Math.abs(actual - roundedExpected));
 
         return this;
     }

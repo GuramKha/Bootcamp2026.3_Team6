@@ -2,10 +2,13 @@ package tests.ui;
 
 import com.microsoft.playwright.*;
 import io.qameta.allure.Allure;
+import net.datafaker.Faker;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
+import utils.FakerSingleton;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -15,9 +18,11 @@ public class BaseTest {
     protected Browser browser;
     protected BrowserContext browserContext;
     protected Page page;
+    protected FakerSingleton faker;
 
+    @Parameters("browser")
     @BeforeClass
-    public void setUp() {
+    public void setUp(String platform) {
         playwright = Playwright.create();
         BrowserType.LaunchOptions options = new BrowserType.LaunchOptions();
 
@@ -35,11 +40,31 @@ public class BaseTest {
             options.setHeadless(false);
         }
 
-        browser = playwright.chromium().launch(options);
+        switch (platform.toLowerCase()) {
+            case "chrome":
+                options.setChannel("chrome");
+                browser = playwright.chromium().launch(options);
+                break;
+
+            case "firefox":
+                browser = playwright.firefox().launch(options);
+                break;
+
+            case "edge":
+                options.setChannel("msedge");
+                browser = playwright.chromium().launch(options);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browser);
+        }
+
         browserContext = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080));
 
         page = browserContext.newPage();
+
+        faker = FakerSingleton.getInstance();
     }
 
     @AfterMethod
