@@ -17,7 +17,8 @@
         <testng.version>7.11.0</testng.version>
         <playwright.version>1.57.0</playwright.version>
         <rest-assured.version>5.5.6</rest-assured.version>
-
+        <jackson-datatype-jsr310.version>2.20.0</jackson-datatype-jsr310.version>
+        <jackson-databind-nullable.version>0.2.7</jackson-databind-nullable.version>
         <lombok.version>1.18.42</lombok.version>
         <allure-testng.version>2.33.0</allure-testng.version>
         <allure-rest-assured.version>2.33.0</allure-rest-assured.version>
@@ -25,7 +26,7 @@
         <jackson-databind.version>2.18.2</jackson-databind.version>
         <slfj.version>2.0.16</slfj.version>
         <net-faker.version>2.5.3</net-faker.version>
-        <aspectj.version>1.9.25.1</aspectj.version>
+        <aspectj.version>1.9.24</aspectj.version>
     </properties>
 
     <dependencies>
@@ -55,14 +56,40 @@
             <version>${allure-rest-assured.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.3.232</version>
+        </dependency>
+        <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
