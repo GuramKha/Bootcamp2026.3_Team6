@@ -8,26 +8,26 @@
         </classes>
     </test>
 
-<!--    <test name="UI - Chrome">-->
-<!--        <parameter name="browser" value="chrome"/>-->
-<!--        <classes>-->
-<!--            <class name="tests.ui.RemittanceConversionTest"/>-->
-<!--            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>-->
-<!--            <class name="tests.ui.RemittanceCalculationEdgeTest"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="UI - Chrome">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="tests.ui.RemittanceConversionTest"/>
+            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>
+            <class name="tests.ui.RemittanceCalculationEdgeTest"/>
+        </classes>
+    </test>
 
-<!--    <test name="UI - Firefox">-->
-<!--        <parameter name="browser" value="firefox"/>-->
-<!--        <classes>-->
-<!--            <class name="tests.ui.RemittanceConversionTest"/>-->
-<!--            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>-->
-<!--            <class name="tests.ui.RemittanceCalculationEdgeTest"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="UI - Firefox">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="tests.ui.RemittanceConversionTest"/>
+            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>
+            <class name="tests.ui.RemittanceCalculationEdgeTest"/>
+        </classes>
+    </test>
 
     <test name="UI - Webkit">
-        <parameter name="browser" value="webkit"/>
+        <parameter name="browser" value="webki"/>
         <classes>
             <class name="tests.ui.RemittanceConversionTest"/>
             <class name="tests.ui.RemittanceCalculationUnsuccessful"/>

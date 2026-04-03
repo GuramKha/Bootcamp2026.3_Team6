@@ -39,7 +39,7 @@ public class MoneyTransfersSteps {
     @Step("Select input currency: {currency}")
     public MoneyTransfersSteps selectCurrencyInput(String currency) {
         moneyTransfersPage.currencyItem(currency).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        moneyTransfersPage.currencyItem(currency).scrollIntoViewIfNeeded();
+        page.evaluate("window.scrollBy(0, 500)");
         moneyTransfersPage.currencyItem(currency).click();
 
         return this;
@@ -64,7 +64,7 @@ public class MoneyTransfersSteps {
     @Step("Open currency output dropdown")
     public MoneyTransfersSteps openCurrencyOutputDropdown () {
         moneyTransfersPage.currencyDropDownOutput.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        moneyTransfersPage.currencyDropDownOutput.click();
+        moneyTransfersPage.currencyDropDownOutput.click(new Locator.ClickOptions().setForce(true));
 
         return this;
     }
