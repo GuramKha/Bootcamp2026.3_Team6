@@ -27,7 +27,7 @@
     </test>
 
     <test name="UI - Webkit">
-        <parameter name="browser" value="webki"/>
+        <parameter name="browser" value="webkit"/>
         <classes>
             <class name="tests.ui.RemittanceConversionTest"/>
             <class name="tests.ui.RemittanceCalculationUnsuccessful"/>
