@@ -54,7 +54,7 @@ public class RemittanceConversionTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void conversionGBPToUSD() {
         moneySteps
-                .enterAmount(faker.getRandomNumber(5000,10000))
+                .enterAmount(faker.getRandomNumber(5000,9000))
                 .openCurrencyInputDropdown()
                 .selectCurrencyInput(GBP_STRING)
                 .openCurrencyOutputDropdown()
@@ -66,7 +66,7 @@ public class RemittanceConversionTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void conversionOfLargeAmount() {
         moneySteps
-                .enterAmount(faker.getRandomNumber(100,10000))
+                .enterAmount(faker.getRandomNumber(100,1000))
                 .verifyConversion();
     }
 

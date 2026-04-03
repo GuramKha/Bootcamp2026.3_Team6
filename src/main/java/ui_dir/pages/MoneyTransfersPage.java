@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.AriaRole;
 import static constants.Constants.*;
 
 public class MoneyTransfersPage {
+    public Page page;
     public Locator convertionRate,
             currencyDropDownInput,
             currencyDropDownOutput,
@@ -21,10 +22,10 @@ public class MoneyTransfersPage {
             navbarMoneyTransfers;
 
     public MoneyTransfersPage(Page page) {
+        this.page = page;
         this.convertionRate = page.locator(".tbcx-pw-exchange-rates-calculator__description");
         this.currencyDropDownInput = page.locator("button.tbcx-field").first().filter(new Locator.FilterOptions().setHasText(USD_STRING));
         this.currencyDropDownOutput = page.locator("button.tbcx-field").filter(new Locator.FilterOptions().setHasText(GEL_STRING));
-        this.currencyItem = page.locator(".tbcx-dropdown-popover-item");
         this.countryDropDown = page.locator(".tbcx-dropdown-selector button.tbcx-field").filter(new Locator.FilterOptions().setHasText(CHOOSE_COUNTRY));
         this.countryItem = page.locator(".tbcx-dropdown-popover-item");
         this.moneyInput = page.locator("div.input-with-label input");
@@ -37,5 +38,9 @@ public class MoneyTransfersPage {
         this.errorMessage = page.locator(".tbcx-pw-money-transfer-fee-calculator__info");
         this.navbarMoneyTransfers = page.locator(".tbcx-pw-breadcrumbs__item")
                 .filter(new Locator.FilterOptions().setHasText(MONEY_TRANSFERS));
+    }
+
+    public Locator currencyItem(String currency) {
+        return currencyItem = page.locator(".tbcx-dropdown-popover-item").filter(new Locator.FilterOptions().setHasText(currency));
     }
 }

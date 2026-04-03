@@ -35,7 +35,7 @@ public class BaseTest {
                     "--disable-gpu"
             ));
         } else {
-            options.setHeadless(false);
+            options.setHeadless(true);
         }
 
         this.browser = switch (platform.toLowerCase()) {

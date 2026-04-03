@@ -5,11 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import ui_dir.pages.MoneyTransfersPage;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import utils.RateUtils;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.ERROR;
@@ -34,10 +30,7 @@ public class MoneyTransfersSteps {
 
     @Step("Enter amount: {amount}")
     public MoneyTransfersSteps enterAmount(String amount) {
-        moneyTransfersPage.moneyInput.first().waitFor(
-                new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
-        );
-        moneyTransfersPage.moneyInput.first().scrollIntoViewIfNeeded();
+        moneyTransfersPage.moneyInput.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.moneyInput.first().fill(amount);
 
         return this;
@@ -45,12 +38,9 @@ public class MoneyTransfersSteps {
 
     @Step("Select input currency: {currency}")
     public MoneyTransfersSteps selectCurrencyInput(String currency) {
-        Locator item = moneyTransfersPage.currencyItem
-                .filter(new Locator.FilterOptions().setHasText(currency));
-
-        item.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        item.scrollIntoViewIfNeeded();
-        item.click();
+        moneyTransfersPage.currencyItem(currency).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        moneyTransfersPage.currencyItem(currency).scrollIntoViewIfNeeded();
+        moneyTransfersPage.currencyItem(currency).click();
 
         return this;
     }
@@ -65,10 +55,8 @@ public class MoneyTransfersSteps {
 
     @Step("Select output currency: {currency}")
     public MoneyTransfersSteps selectCurrencyOutput(String currency) {
-        Locator item = moneyTransfersPage.currencyItem.filter(new Locator.FilterOptions().setHasText(currency));
-
-        item.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        item.click(new Locator.ClickOptions().setForce(true));
+        moneyTransfersPage.currencyItem(currency).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        moneyTransfersPage.currencyItem(currency).click(new Locator.ClickOptions().setForce(true));
 
         return this;
     }
@@ -83,22 +71,22 @@ public class MoneyTransfersSteps {
 
     @Step("Verify conversion")
     public MoneyTransfersSteps verifyConversion() {
-        double rate = getRate();
-
-        double amount = Double.parseDouble(
-                moneyTransfersPage.moneyInput.first().inputValue().replace(",", "").trim()
+        double rate = RateUtils.extractRate(
+                moneyTransfersPage.convertionRate.innerText()
         );
 
-        double actual = Double.parseDouble(
-                moneyTransfersPage.moneyInput.last().inputValue().replace(",", "").trim()
+        double amount = RateUtils.parseAmount(
+                moneyTransfersPage.moneyInput.first().inputValue()
         );
-        double expected = amount * rate;
 
-        double roundedExpected = BigDecimal.valueOf(expected)
-                .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue();
+        double actual = RateUtils.parseAmount(
+                moneyTransfersPage.moneyInput.last().inputValue()
+        );
 
-        assertTrue(Math.abs(actual - roundedExpected) < 1);
+        double expected = RateUtils.calculateExpected(amount, rate);
+        double roundedExpected = RateUtils.round(expected);
+
+        assertTrue(RateUtils.isCloseEnough(actual, roundedExpected));
 
         return this;
     }
@@ -108,20 +96,6 @@ public class MoneyTransfersSteps {
         moneyTransfersPage.swapButton.click();
 
         return this;
-    }
-
-    public double getRate() {
-        String text = moneyTransfersPage.convertionRate.innerText();
-
-        Pattern pattern = Pattern.compile("=\\s*([\\d.]+)");
-        Matcher matcher = pattern.matcher(text);
-
-        double rate = 0;
-        if (matcher.find()) {
-            rate = Double.parseDouble(matcher.group(1));
-        }
-
-        return rate;
     }
 
     @Step("Open remittance fee calculation")
