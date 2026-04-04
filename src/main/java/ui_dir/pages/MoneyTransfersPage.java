@@ -19,7 +19,8 @@ public class MoneyTransfersPage {
             remittanceFeeCalculation,
             swapButton,
             errorMessage,
-            navbarMoneyTransfers;
+            navbarMoneyTransfers,
+            allertMessage;
 
     public MoneyTransfersPage(Page page) {
         this.page = page;
@@ -38,6 +39,7 @@ public class MoneyTransfersPage {
         this.errorMessage = page.locator(".tbcx-pw-money-transfer-fee-calculator__info");
         this.navbarMoneyTransfers = page.locator(".tbcx-pw-breadcrumbs__item")
                 .filter(new Locator.FilterOptions().setHasText(MONEY_TRANSFERS));
+        this.allertMessage = page.locator("tbcx-pw-money-transfer-fee-calculator__info ng-star-inserted");
     }
 
     public Locator currencyItem(String currency) {

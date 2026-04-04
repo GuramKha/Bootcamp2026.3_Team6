@@ -53,6 +53,7 @@ public class RemittanceCalculationEdgeTest extends BaseTest {
     public void minAmountValidation() {
         moneySteps
                 .openRemittanceFeeCalculation()
+                .verifyRemittanceFeeCalculationOpened()
                 .enterAmount(MIN_INPUT)
                 .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(USD_STRING)
@@ -66,6 +67,7 @@ public class RemittanceCalculationEdgeTest extends BaseTest {
     public void maxAmountValidation() {
         moneySteps
                 .openRemittanceFeeCalculation()
+                .verifyRemittanceFeeCalculationOpened()
                 .enterAmount(MAX_AMOUNT)
                 .verifyProvidersDisplayed();
     }

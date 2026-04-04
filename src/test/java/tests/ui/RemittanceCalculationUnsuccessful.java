@@ -53,6 +53,7 @@ public class RemittanceCalculationUnsuccessful extends BaseTest {
     public void remittanceFeeForGreece() {
         moneySteps
                 .openRemittanceFeeCalculation()
+                .verifyRemittanceFeeCalculationOpened()
                 .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(EUR_STRING)
                 .enterAmount(faker.getRandomNumber(200,500))
