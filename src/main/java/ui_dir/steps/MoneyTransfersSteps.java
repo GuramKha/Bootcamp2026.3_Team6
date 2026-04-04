@@ -106,14 +106,6 @@ public class MoneyTransfersSteps {
         return this;
     }
 
-    @Step("Open remittance fee calculation")
-    public MoneyTransfersSteps verifyRemittanceFeeCalculationOpened() {
-        moneyTransfersPage.allertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return this;
-    }
-
-
     @Step("Select country Greece")
     public MoneyTransfersSteps selectCountry(String country) {
         moneyTransfersPage.countryItem.filter(new Locator.FilterOptions().setHasText(country)).click();

@@ -25,7 +25,7 @@ public class BaseTest {
         playwright = Playwright.create();
 
         boolean isCI = "true".equals(System.getenv("CI"));
-        boolean headless = true;
+        boolean headless = isCI;
 
         switch (platform.toLowerCase()) {
             case "firefox" -> {

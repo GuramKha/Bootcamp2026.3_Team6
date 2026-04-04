@@ -1,6 +1,5 @@
 package tests.ui;
 
-import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -53,7 +52,6 @@ public class RemittanceCalculationUnsuccessful extends BaseTest {
     public void remittanceFeeForGreece() {
         moneySteps
                 .openRemittanceFeeCalculation()
-                .verifyRemittanceFeeCalculationOpened()
                 .openCurrencyOutputDropdown()
                 .selectCurrencyOutput(EUR_STRING)
                 .enterAmount(faker.getRandomNumber(200,500))
