@@ -23,32 +23,39 @@ public class BaseTest {
     @BeforeClass
     public void setUp(String platform) {
         playwright = Playwright.create();
-        BrowserType.LaunchOptions options = new BrowserType.LaunchOptions();
-
         boolean isCI = "true".equals(System.getenv("CI"));
 
-        if (isCI) {
-            options.setHeadless(true);
-            options.setArgs(List.of(
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu"
-            ));
-        } else {
-            options.setHeadless(true);
+        switch (platform.toLowerCase()) {
+            case "firefox" -> {
+                BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                        .setHeadless(true);
+                browser = playwright.firefox().launch(options);
+            }
+            case "webkit" -> {
+                BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                        .setHeadless(true);
+                browser = playwright.webkit().launch(options);
+            }
+            default -> {
+                BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                        .setHeadless(true);
+
+                if (isCI) {
+                    options.setArgs(List.of(
+                            "--no-sandbox",
+                            "--disable-dev-shm-usage",
+                            "--disable-gpu"
+                    ));
+                }
+
+                browser = playwright.chromium().launch(options);
+            }
         }
 
-        this.browser = switch (platform.toLowerCase()) {
-            case "firefox" -> playwright.firefox().launch(options);
-            case "webkit" -> playwright.webkit().launch(options);
-            default -> playwright.chromium().launch(options);
-        };
-
-        browserContext = browser.newContext(new Browser.NewContextOptions()
-                .setViewportSize(1920, 1080));
-
+        browserContext = browser.newContext(
+                new Browser.NewContextOptions().setViewportSize(1920, 1080)
+        );
         page = browserContext.newPage();
-
         faker = FakerSingleton.getInstance();
     }
 
