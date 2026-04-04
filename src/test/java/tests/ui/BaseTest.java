@@ -23,22 +23,26 @@ public class BaseTest {
     @BeforeClass
     public void setUp(String platform) {
         playwright = Playwright.create();
+
         boolean isCI = "true".equals(System.getenv("CI"));
+        boolean headless = isCI;
 
         switch (platform.toLowerCase()) {
             case "firefox" -> {
                 BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
-                        .setHeadless(true);
+                        .setHeadless(headless);
+
                 browser = playwright.firefox().launch(options);
             }
             case "webkit" -> {
                 BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
-                        .setHeadless(true);
+                        .setHeadless(headless);
+
                 browser = playwright.webkit().launch(options);
             }
             default -> {
                 BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
-                        .setHeadless(true);
+                        .setHeadless(headless);
 
                 if (isCI) {
                     options.setArgs(List.of(
@@ -55,6 +59,7 @@ public class BaseTest {
         browserContext = browser.newContext(
                 new Browser.NewContextOptions().setViewportSize(1920, 1080)
         );
+
         page = browserContext.newPage();
         faker = FakerSingleton.getInstance();
     }
