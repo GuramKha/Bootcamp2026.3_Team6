@@ -12,8 +12,8 @@ import ui_dir.steps.MoneyTransfersSteps;
 
 import static constants.Constants.*;
 
-@Epic("Money Transfers")
 @Feature("Remittance Fee Calculation - Unsuccessful")
+@Test(groups = {"E2E - Remittance Fee Calculation - Unsuccessful - CRM-T2"})
 public class RemittanceCalculationUnsuccessful extends BaseTest {
 
     private HomeSteps homeSteps;

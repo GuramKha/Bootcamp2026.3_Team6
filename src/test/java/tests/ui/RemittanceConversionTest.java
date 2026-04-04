@@ -13,8 +13,8 @@ import ui_dir.steps.MoneyTransfersSteps;
 
 import static constants.Constants.*;
 
-@Epic("Money Transfers")
 @Feature("Remittance Conversion")
+@Test(groups = {"E2E - Remittance Conversion - CRM-T1"})
 public class RemittanceConversionTest extends BaseTest {
 
     private HomeSteps homeSteps;

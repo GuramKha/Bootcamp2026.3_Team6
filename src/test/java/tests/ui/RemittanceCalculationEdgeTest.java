@@ -12,8 +12,8 @@ import ui_dir.steps.MoneyTransfersSteps;
 
 import static constants.Constants.*;
 
-@Epic("Money Transfers")
 @Feature("Remittance Fee Calculation - Edge Cases")
+@Test(groups = {"E2E - Remittance Fee Calculation for minimum and maximum amounts -  Edge case - CRM-T3"})
 public class RemittanceCalculationEdgeTest extends BaseTest {
 
     private HomeSteps homeSteps;
