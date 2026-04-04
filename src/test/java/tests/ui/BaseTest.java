@@ -34,12 +34,6 @@ public class BaseTest {
 
                 browser = playwright.firefox().launch(options);
             }
-            case "webkit" -> {
-                BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
-                        .setHeadless(headless);
-
-                browser = playwright.webkit().launch(options);
-            }
             default -> {
                 BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
                         .setHeadless(headless);

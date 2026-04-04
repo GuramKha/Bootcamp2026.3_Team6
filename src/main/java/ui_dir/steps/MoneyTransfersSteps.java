@@ -9,6 +9,7 @@ import utils.RateUtils;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.ERROR;
+import static constants.Constants.MONEY_TRANSFERS_URL;
 import static org.testng.AssertJUnit.assertTrue;
 
 public class MoneyTransfersSteps {
@@ -23,7 +24,7 @@ public class MoneyTransfersSteps {
 
     @Step("Verify Money Transfers page opened")
     public MoneyTransfersSteps verifyMoneyTransfersPageOpened() {
-        assertThat(page).hasURL("https://tbcbank.ge/en/other-products/money-transfers");
+        assertThat(page).hasURL(MONEY_TRANSFERS_URL);
         assertThat(moneyTransfersPage.navbarMoneyTransfers).isVisible();
 
         return this;

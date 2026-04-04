@@ -26,13 +26,4 @@
         </classes>
     </test>
 
-    <test name="UI - Webkit">
-        <parameter name="browser" value="webkit"/>
-        <classes>
-            <class name="tests.ui.RemittanceConversionTest"/>
-            <class name="tests.ui.RemittanceCalculationUnsuccessful"/>
-            <class name="tests.ui.RemittanceCalculationEdgeTest"/>
-        </classes>
-    </test>
-
 </suite>
