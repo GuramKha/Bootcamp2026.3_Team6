@@ -4,7 +4,6 @@ public class Constants {
     public static final String TBC_URL = "https://tbcbank.ge/en";
     public static final String MONEY_TRANSFERS_URL = "https://tbcbank.ge/en/other-products/money-transfers";
 
-    public static final String ACCEPT_ALL = "ACCEPT All";
     public static final String MONEY_TRANSFERS = "Money Transfers";
     public static final String ERROR = "Please enter the amount and select the country";
     public static final String CHOOSE_COUNTRY = "Choose a country";
