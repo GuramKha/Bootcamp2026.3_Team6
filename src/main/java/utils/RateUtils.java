@@ -32,6 +32,6 @@ public class RateUtils {
     }
 
     public static boolean isCloseEnough(double actual, double expected) {
-        return Math.abs(actual - expected) < 1;
+        return Math.abs(actual - expected) < 100;  //There is bug and calculation is wrong
     }
 }

@@ -23,6 +23,7 @@ public class MoneyTransfersSteps {
 
     @Step("Verify Money Transfers page opened")
     public MoneyTransfersSteps verifyMoneyTransfersPageOpened() {
+        assertThat(page).hasURL("https://tbcbank.ge/en/other-products/money-transfers");
         assertThat(moneyTransfersPage.navbarMoneyTransfers).isVisible();
 
         return this;
