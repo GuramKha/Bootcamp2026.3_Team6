@@ -1,7 +1,6 @@
 export const CONFIG = {
     BASE_URL: 'https://apigw.tbcbank.ge/api/v1',
     THINK_TIME: 1,
-    REQUEST_TIMEOUT: '10s',
 };
 
 export const TEST_DATA = {

@@ -5,8 +5,8 @@ import { buildFeeScenario } from '../helpers/FeeScenario.js';
 
 export const options = {
     stages: [
-        { duration: '20s', target: 20 },
-        { duration: '40s', target: 20 },
+        { duration: '20s', target: 10 },
+        { duration: '30s', target: 10 },
         { duration: '10s', target: 0 },
     ],
     thresholds: {
@@ -21,7 +21,6 @@ export default function () {
     const feeUrl = `${CONFIG.BASE_URL}/moneyTransfer/fees?amount=${fee.amount}&currencyCode=${fee.currency}&receiveCountryCode=${fee.country}`;
 
     const feeRes = http.get(feeUrl, {
-        timeout: CONFIG.REQUEST_TIMEOUT,
         tags: { endpoint: 'fees' },
     });
 

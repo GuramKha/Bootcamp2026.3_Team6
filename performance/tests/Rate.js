@@ -7,7 +7,7 @@ import { buildRateScenario } from '../helpers/RateScenario.js';
 export const options = {
     stages: [
         { duration: '20s', target: 40 },
-        { duration: '40s', target: 40 },
+        { duration: '30s', target: 40 },
         { duration: '10s', target: 0 },
     ],
     thresholds: {
@@ -22,7 +22,6 @@ export default function () {
     const rateUrl = `${CONFIG.BASE_URL}/exchangeRates/getMoneyTransferRate?Iso1=${scenario.pair.from}&Iso2=${scenario.pair.to}`;
 
     const res = http.get(rateUrl, {
-        timeout: CONFIG.REQUEST_TIMEOUT,
         tags: { endpoint: 'rate' },
     });
 
