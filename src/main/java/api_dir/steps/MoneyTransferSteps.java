@@ -1,8 +1,6 @@
 package api_dir.steps;
 import api_dir.api.client.CountryApi;
 import api_dir.api.client.MoneyTransferApi;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import test_data.models.response.GetCountriesResponse;
@@ -30,36 +28,20 @@ public class MoneyTransferSteps {
     public MoneyTransferSteps getMoneyTransferOptions(int amount, String currencyCode, String receiveCountryCode){
         logger.info("Calling MoneyTransfer API for amount: {}, currency: {}, country: {}", amount, currencyCode, receiveCountryCode);
 
-        moneyTransferResponse = WaitUtils.waitForNonEmptyResponse(
-                () -> moneyTransferApi.getMoneyTransferOptions(
-                        String.valueOf(amount), currencyCode, receiveCountryCode),
-                10000,
+        moneyTransferResponse = WaitUtils.waitFor(
+                () -> moneyTransferApi.getMoneyTransferOptions(String.valueOf(amount), currencyCode, receiveCountryCode),
+                r -> r.getStatusCode() == 200 && !r.then().extract().body().jsonPath().getList("$").isEmpty(),
+                10,
                 500
         );
-
-        moneyTransferResponse.then()
+        getMoneyTransferOptionsResponse = Arrays.stream(moneyTransferResponse
+                .then()
                 .log().body()
                 .assertThat()
-                .statusCode(200);
+                .statusCode(200)
+                .body("size()", greaterThan(0))
+                .extract().as(GetMoneyTransferOptionsResponse[].class)).toList();
 
-
-        return this;
-    }
-
-    @Step("Deserialize money transfer options response")
-    public MoneyTransferSteps deserializeMoneyTransferOptionsResponse() {
-        logger.info("Deserializing money transfer options response.");
-
-        String body = moneyTransferResponse.getBody().asString();
-        try {
-            getMoneyTransferOptionsResponse = Arrays.stream(
-                    new ObjectMapper()
-                            .readValue(body, GetMoneyTransferOptionsResponse[].class)
-            ).toList();
-            logger.debug("Deserialized options: {}", getMoneyTransferOptionsResponse);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to deserialize money transfer options response: " + e.getMessage(), e);
-        }
 
         return this;
     }

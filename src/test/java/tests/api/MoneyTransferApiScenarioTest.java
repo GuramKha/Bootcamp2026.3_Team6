@@ -46,7 +46,6 @@ public class MoneyTransferApiScenarioTest {
     public void getMoneyTransferOptionsTest() {
         actualOptions = moneyTransferSteps
                             .getMoneyTransferOptions(amount,currency,countryCode)
-                            .deserializeMoneyTransferOptionsResponse()
                             .getMoneyTransferSystemList();
 
         moneyTransferSteps
