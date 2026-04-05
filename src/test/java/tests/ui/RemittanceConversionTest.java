@@ -1,10 +1,6 @@
 package tests.ui;
 
-import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import net.datafaker.Faker;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ui_dir.steps.CommonSteps;
@@ -13,7 +9,7 @@ import ui_dir.steps.MoneyTransfersSteps;
 
 import static constants.Constants.*;
 
-@Feature("Remittance Conversion")
+@Feature("Money Transfers")
 @Test(groups = {"E2E - Remittance Conversion - CRM-T1"})
 public class RemittanceConversionTest extends BaseTest {
 
@@ -32,7 +28,6 @@ public class RemittanceConversionTest extends BaseTest {
     }
 
     @Test(priority = 1, description = "Navigate to Personal Products")
-    @Severity(SeverityLevel.NORMAL)
     public void navigatePersonalProducts() {
         commonSteps
                 .goToPersonal()
@@ -40,7 +35,6 @@ public class RemittanceConversionTest extends BaseTest {
     }
 
     @Test(priority = 2, description = "Choose Money Transfers")
-    @Severity(SeverityLevel.CRITICAL)
     public void navigateMoneyTransfers() {
 
         commonSteps
@@ -51,10 +45,9 @@ public class RemittanceConversionTest extends BaseTest {
     }
 
     @Test(priority = 3, description = "Currency conversion from GBP to USD Remittance Conversion")
-    @Severity(SeverityLevel.BLOCKER)
     public void conversionGBPToUSD() {
         moneySteps
-                .enterAmount(faker.getRandomNumber(5000,9000))
+                .enterAmount(faker.getRandomNumber(100,1000))
                 .openCurrencyInputDropdown()
                 .selectCurrencyInput(GBP_STRING)
                 .openCurrencyOutputDropdown()
@@ -63,15 +56,13 @@ public class RemittanceConversionTest extends BaseTest {
     }
 
     @Test(priority = 4, description = "Conversion of the increased amount from GBP to USD Remittance Conversion")
-    @Severity(SeverityLevel.CRITICAL)
     public void conversionOfLargeAmount() {
         moneySteps
-                .enterAmount(faker.getRandomNumber(100,1000))
+                .enterAmount(faker.getRandomNumber(5000,9000))
                 .verifyConversion();
     }
 
     @Test(priority = 5, description = "Currency conversion for the same amount from USD to GBP Remittance Conversion")
-    @Severity(SeverityLevel.CRITICAL)
     public void currencySwap() {
         moneySteps
                 .swapCurrencies()

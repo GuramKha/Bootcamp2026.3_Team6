@@ -4,6 +4,8 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ui_dir.pages.MoneyTransfersPage;
 import utils.RateUtils;
 
@@ -13,6 +15,8 @@ import static constants.Constants.MONEY_TRANSFERS_URL;
 import static org.testng.AssertJUnit.assertTrue;
 
 public class MoneyTransfersSteps {
+
+    private static final Logger logger = LogManager.getLogger(MoneyTransfersSteps.class);
 
     private final MoneyTransfersPage moneyTransfersPage;
     private final Page page;
@@ -24,6 +28,8 @@ public class MoneyTransfersSteps {
 
     @Step("Verify Money Transfers page opened")
     public MoneyTransfersSteps verifyMoneyTransfersPageOpened() {
+        logger.debug("Expected URL: " + MONEY_TRANSFERS_URL);
+
         assertThat(page).hasURL(MONEY_TRANSFERS_URL);
         assertThat(moneyTransfersPage.navbarMoneyTransfers).isVisible();
 
@@ -32,7 +38,10 @@ public class MoneyTransfersSteps {
 
     @Step("Enter amount: {amount}")
     public MoneyTransfersSteps enterAmount(String amount) {
-        moneyTransfersPage.moneyInput.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        logger.info("Entering amount: " + amount);
+
+        moneyTransfersPage.moneyInput.first()
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.moneyInput.first().fill(amount);
 
         return this;
@@ -40,15 +49,19 @@ public class MoneyTransfersSteps {
 
     @Step("Select input currency: {currency}")
     public MoneyTransfersSteps selectCurrencyInput(String currency) {
+        logger.info("Selecting input currency: " + currency);
+
         moneyTransfersPage.currencyItem(currency).click();
 
         return this;
     }
 
     @Step("Open currency input dropdown")
-    public MoneyTransfersSteps openCurrencyInputDropdown () {
+    public MoneyTransfersSteps openCurrencyInputDropdown() {
         page.evaluate("window.scrollBy(0, 600)");
-        moneyTransfersPage.currencyDropDownInput.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        moneyTransfersPage.currencyDropDownInput
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.currencyDropDownInput.click();
 
         return this;
@@ -56,15 +69,19 @@ public class MoneyTransfersSteps {
 
     @Step("Select output currency: {currency}")
     public MoneyTransfersSteps selectCurrencyOutput(String currency) {
-        moneyTransfersPage.currencyItem(currency).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        moneyTransfersPage.currencyItem(currency).click(new Locator.ClickOptions().setForce(true));
+        logger.info("Selecting output currency: " + currency);
+
+        Locator currencyOption = moneyTransfersPage.currencyItem(currency);
+        currencyOption.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        currencyOption.click(new Locator.ClickOptions().setForce(true));
 
         return this;
     }
 
     @Step("Open currency output dropdown")
-    public MoneyTransfersSteps openCurrencyOutputDropdown () {
-        moneyTransfersPage.currencyDropDownOutput.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public MoneyTransfersSteps openCurrencyOutputDropdown() {
+        moneyTransfersPage.currencyDropDownOutput.first()
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.currencyDropDownOutput.click(new Locator.ClickOptions().setForce(true));
 
         return this;
@@ -87,6 +104,11 @@ public class MoneyTransfersSteps {
         double expected = RateUtils.calculateExpected(amount, rate);
         double roundedExpected = RateUtils.round(expected);
 
+        logger.debug("rate=" + rate +
+                ", amount=" + amount +
+                ", actual=" + actual +
+                ", expected=" + roundedExpected);
+
         assertTrue(RateUtils.isCloseEnough(actual, roundedExpected));
 
         return this;
@@ -94,6 +116,8 @@ public class MoneyTransfersSteps {
 
     @Step("Swap currencies")
     public MoneyTransfersSteps swapCurrencies() {
+        logger.info("Swapping currencies");
+
         moneyTransfersPage.swapButton.click();
 
         return this;
@@ -108,14 +132,19 @@ public class MoneyTransfersSteps {
 
     @Step("Select country Greece")
     public MoneyTransfersSteps selectCountry(String country) {
-        moneyTransfersPage.countryItem.filter(new Locator.FilterOptions().setHasText(country)).click();
+        logger.info("Selecting country: " + country);
+
+        moneyTransfersPage.countryItem
+                .filter(new Locator.FilterOptions().setHasText(country))
+                .click();
 
         return this;
     }
 
     @Step("Open country dropdown")
-    public MoneyTransfersSteps openCountryDropdown(){
-        moneyTransfersPage.countryDropDown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public MoneyTransfersSteps openCountryDropdown() {
+        moneyTransfersPage.countryDropDown
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         moneyTransfersPage.countryDropDown.click();
 
         return this;
@@ -123,14 +152,21 @@ public class MoneyTransfersSteps {
 
     @Step("Verify providers displayed")
     public MoneyTransfersSteps verifyProvidersDisplayed() {
-        moneyTransfersPage.cards.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        assertTrue(moneyTransfersPage.cards.count() > 0);
+        moneyTransfersPage.cards.first()
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        int count = moneyTransfersPage.cards.count();
+        logger.debug("Providers count: " + count);
+
+        assertTrue(count > 0);
 
         return this;
     }
 
     @Step("Enter invalid amount: {value}")
     public MoneyTransfersSteps enterInvalidAmount(String value) {
+        logger.warn("Entering invalid amount: " + value);
+
         moneyTransfersPage.moneyInput.first().fill(value);
 
         return this;
@@ -138,6 +174,8 @@ public class MoneyTransfersSteps {
 
     @Step("Verify error message")
     public MoneyTransfersSteps verifyErrorMessage() {
+        logger.debug("Expected error: " + ERROR);
+
         assertThat(moneyTransfersPage.errorMessage).containsText(ERROR);
 
         return this;
