@@ -29,10 +29,17 @@ public class MoneyTransferSteps {
         logger.info("Calling MoneyTransfer API for amount: {}, currency: {}, country: {}", amount, currencyCode, receiveCountryCode);
 
         moneyTransferResponse = WaitUtils.waitFor(
-                () -> moneyTransferApi.getMoneyTransferOptions(String.valueOf(amount), currencyCode, receiveCountryCode),
-                r -> r.getStatusCode() == 200 && !r.then().extract().body().jsonPath().getList("$").isEmpty(),
+                () -> moneyTransferApi.getMoneyTransferOptions(
+                        String.valueOf(amount), currencyCode, receiveCountryCode),
+                r -> {
+                    String body = r.getBody().asString();
+                    return r.getStatusCode() == 200
+                            && body != null
+                            && !body.isBlank()
+                            && !body.equals("[]");
+                },
                 10,
-                10000
+                500
         );
         getMoneyTransferOptionsResponse = Arrays.stream(moneyTransferResponse
                 .then()
