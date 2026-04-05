@@ -1,0 +1,55 @@
+AI CODE REVIEW RESULT
+Project: Bootcamp2026.3_Team6 (tbcbank.ge UI automation)
+Task: Stabilize Playwright + TestNG UI tests (no business-logic changes)
+
+
+Scope reviewed:
+- RemittanceConversionTest
+- BaseTest
+- MoneyTransfersSteps
+- MoneyTransfersPage
+- Helpers/Test data: RateUtils, Faker singleton
+
+
+Key findings (what can cause flakiness / failures):
+1) Test order dependency (priority coupling)
+- RemittanceConversionTest relies on @Test(priority=...) execution order.
+- If an early test fails or is skipped, later tests can fail due to missing preconditions (currencies not set, wrong page state).
+
+
+2) Shared mutable state via @BeforeClass
+- Navigation/cookie handling runs once; all tests reuse the same Page/session state.
+- This can leak state across tests (selected currencies, previous inputs, scroll position), increasing intermittent CI failures.
+
+
+3) Weak synchronization around navigation and dropdown actions
+- Navigation/transitions are not consistently followed by deterministic readiness checks.
+- In slower CI environments this increases race-condition risk (actions happen before UI is ready).
+
+
+4) Locator robustness gaps in MoneyTransfersPage
+- Some locators were too generic and could match multiple elements, leading to unstable clicks/assertions.
+- Examples of recommended hardening:
+ - Use semantic locators where possible:
+   remittanceFeeCalculation -> getByRole(AriaRole.BUTTON, name=REMITTANCE_FEE)
+ - Scope/qualify locators to the intended element:
+   navbarMoneyTransfers -> locator(".tbcx-pw-breadcrumbs__item").filter(hasText(MONEY_TRANSFERS))
+
+
+5) Conversion parsing and test data generation not centralized
+- getRate and conversion math were mixed into steps/tests, blending UI actions with parsing/verification logic.
+- Faker usage was not standardized; uncontrolled random data reduces determinism and repeated Faker creation is unnecessary overhead.
+
+
+AI recommended changes (what to update):
+- Remove priority chains: make each test fully self-contained and set its own preconditions.
+- Reduce shared-state risks: prefer per-test initialization and deterministic “start state” navigation.
+- Add explicit load/readiness waits after navigation and after dropdown open/selection actions.
+- Harden locators using Playwright best practices (prefer getByRole; add filter/scoping to avoid ambiguous matches).
+- Extract rate parsing + conversion calculations into a helper (RateUtils) and standardize Faker via a singleton (optionally seeded for CI determinism).
+
+
+Expected impact:
+- Less cross-test leakage and fewer cascade failures.
+- Improved CI determinism and reduced flakiness from timing/locator ambiguity.
+- Cleaner separation of responsibilities (UI steps vs calculation/parsing utilities) + more consistent test data handling.

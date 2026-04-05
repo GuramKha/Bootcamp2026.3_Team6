@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pipeline</groupId>
-    <artifactId>pipeline-homework</artifactId>
+    <groupId>final-project</groupId>
+    <artifactId>final</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -26,7 +26,7 @@
         <jackson-databind.version>2.18.2</jackson-databind.version>
         <slfj.version>2.0.16</slfj.version>
         <net-faker.version>2.5.3</net-faker.version>
-        <aspectj.version>1.9.24</aspectj.version>
+        <aspectj.version>1.9.21</aspectj.version>
     </properties>
 
     <dependencies>
@@ -106,6 +106,17 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slfj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.1</version>
         </dependency>
         <dependency>
             <groupId>net.datafaker</groupId>

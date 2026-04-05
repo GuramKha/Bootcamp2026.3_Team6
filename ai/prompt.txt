@@ -1,0 +1,34 @@
+Role: Senior QA Automation Engineer (Playwright + Java + TestNG)
+
+
+Task:
+Review the tbcbank.ge UI automation code and recommend targeted stabilization improvements WITHOUT changing business logic.
+
+
+Scope:
+- RemittanceConversionTest
+- BaseTest
+- MoneyTransfersSteps
+- MoneyTransfersPage
+
+
+What to deliver:
+A) Key flakiness risks (with concrete references to patterns in the code)
+B) Recommended changes (practical, minimal, high-value)
+C) Improved code examples (snippets or full updated classes where needed)
+D) Short summary: why the changes reduce CI flakiness
+
+
+Focus areas (must cover if present):
+- Order dependency (TestNG priority coupling / chained tests)
+- Shared state from @BeforeClass and reused Page/session state
+- Missing/weak waits after navigation and dropdown actions (avoid hard sleeps)
+- Locator robustness (avoid selectors tied to mutable visible text like default currency labels)
+- Verification reliability: extract getRate + conversion calculations into a helper (RateUtils), define rounding/tolerance clearly
+- Test data strategy: standardize Faker usage via singleton (optionally seeded) for consistency and lower allocations
+
+
+Constraints:
+- Keep the same scenarios and business assertions.
+- Do not over-engineer; suggest extensions, not a full framework rewrite.
+- Be specific and technical; avoid generic advice.

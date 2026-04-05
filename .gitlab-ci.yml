@@ -29,12 +29,11 @@ execute-tests:
   stage: tests
   allow_failure: true
   before_script:
-    - apt-get update -qq && apt-get install -y wget curl gnupg unzip
+    - apt-get update -qq && apt-get install -y wget
 
-    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
-    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-    - apt-get update -qq && apt-get install -y google-chrome-stable
-    - google-chrome --version
+    - mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps" -D exec.classpathScope=test
+
+    - mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install chromium firefox" -D exec.classpathScope=test
 
   script:
     - mvn clean test -Dsurefire.failIfNoSpecifiedTests=false
