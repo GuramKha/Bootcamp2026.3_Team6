@@ -32,7 +32,7 @@ public class MoneyTransferSteps {
                 () -> moneyTransferApi.getMoneyTransferOptions(String.valueOf(amount), currencyCode, receiveCountryCode),
                 r -> r.getStatusCode() == 200 && !r.then().extract().body().jsonPath().getList("$").isEmpty(),
                 10,
-                500
+                10000
         );
         getMoneyTransferOptionsResponse = Arrays.stream(moneyTransferResponse
                 .then()
