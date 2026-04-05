@@ -1,23 +1,32 @@
 package constants;
 
 public class Constants {
-    public static final String TBC_URL = "https://tbcbank.ge/en";
-    public static final String MONEY_TRANSFERS_URL = "https://tbcbank.ge/en/other-products/money-transfers";
-
-    public static final String MONEY_TRANSFERS = "Money Transfers";
-    public static final String ERROR = "Please enter the amount and select the country";
-    public static final String CHOOSE_COUNTRY = "Choose a country";
-    public static final String REMITTANCE_FEE = "Remittance Fee Calculation";
-    public static final String SWAP_CURRENCY = "swap-alt-outlined";
-    public static final String GBP_STRING = "GBP";
-    public static final String USD_STRING = "USD";
-    public static final String GEL_STRING = "GEL";
-    public static final String EUR_STRING = "EUR";
-    public static final String INVALID_INPUT = "m34000";
-    public static final String MAX_AMOUNT = "3000000";
-    public static final String MIN_INPUT = "0.005";
-    public static final String GREECE = "Greece";
-    public static final String USA = "United States";
-    public static final String PERSONAL = "Personal";
-    public static final String REJECT_COOKIES = "REJECT ALL";
+    public static final String TBC_URL = "https://tbcbank.ge/en",
+                                MONEY_TRANSFERS_URL = "https://tbcbank.ge/en/other-products/money-transfers",
+                                MONEY_TRANSFERS = "Money Transfers",
+                                ERROR = "Please enter the amount and select the country",
+                                CHOOSE_COUNTRY = "Choose a country",
+                                REMITTANCE_FEE = "Remittance Fee Calculation",
+                                SWAP_CURRENCY = "swap-alt-outlined",
+                                GBP_STRING = "GBP",
+                                USD_STRING = "USD",
+                                GEL_STRING = "GEL",
+                                EUR_STRING = "EUR",
+                                INVALID_INPUT = "m34000",
+                                MAX_AMOUNT = "3000000",
+                                MIN_INPUT = "0.005",
+                                GREECE = "Greece",
+                                USA = "United States",
+                                PERSONAL = "Personal",
+                                REJECT_COOKIES = "REJECT ALL",
+                                TBC_BASE_URI = "https://apigw.tbcbank.ge/api/v1",
+                                UNITED_STATES = "United States",
+                                GET_COUNTRIES = "/country/list",
+                                GET_M0NEY_TRANSFER_OPTIONS = "/moneyTransfer/fees",
+                                GET_SYSTEMS = "/moneyTransfer/systems",
+                                GEL = "GEL",
+                                USD = "USD",
+                                EUR = "EUR",
+                                GBP = "GBP",
+                                LOCALE = "en-US";
 }
