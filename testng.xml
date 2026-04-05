@@ -5,7 +5,7 @@
 
     <test name="API Tests" parallel="classes" thread-count="2">
         <classes>
-
+            <class name="tests.api.MoneyTransferApiScenarioTest"/>
         </classes>
     </test>
 
