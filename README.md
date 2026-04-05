@@ -167,7 +167,7 @@ allure serve target/allure-results
 
 | Resource                  | Link                                                                          |
 |---------------------------|-------------------------------------------------------------------------------|
-| 🔧 GitHub Actions Pipeline | [View Workflows](https://github.com/your-org/Bootcamp2025.3_Team6/actions)  |
+| 🔧 GitLab Pipeline | [View Workflows](https://gitlab.com/final-project-tbc/bootcamp2026.3_team6/-/pipelines/2430981121)  |
 
 
 ## 9. AI Summary
