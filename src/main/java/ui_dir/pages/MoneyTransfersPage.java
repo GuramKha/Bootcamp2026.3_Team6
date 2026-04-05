@@ -7,45 +7,61 @@ import com.microsoft.playwright.options.AriaRole;
 import static constants.Constants.*;
 
 public class MoneyTransfersPage {
-    public Page page;
-    public Locator convertionRate,
-            currencyDropDownInput,
-            currencyDropDownOutput,
-            currencyItem,
-            countryDropDown,
-            countryItem,
-            moneyInput,
-            cards,
+    private final Page page;
+    public Locator moneyTransfersNavbar,
+            currencyDropdownSelectorItem,
+            currencySelectorItem,
+            dropdownList,
+            currencyInput,
+            conversionRate,
+            swapCurrenciesButton,
             remittanceFeeCalculation,
-            swapButton,
-            errorMessage,
-            navbarMoneyTransfers;
+            countryDropdown,
+            cards,
+            providerFees,
+            errorMessage;
 
     public MoneyTransfersPage(Page page) {
         this.page = page;
-        this.convertionRate = page.locator(".tbcx-pw-exchange-rates-calculator__description");
-        this.currencyDropDownInput = page.locator("button.tbcx-field").first().filter(new Locator.FilterOptions().setHasText(USD_STRING));
-        this.currencyDropDownOutput = page.locator("button.tbcx-field").filter(new Locator.FilterOptions().setHasText(GEL_STRING));
-        this.countryDropDown = page.locator(".tbcx-dropdown-selector button.tbcx-field").filter(new Locator.FilterOptions().setHasText(CHOOSE_COUNTRY));
-        this.countryItem = page.locator(".tbcx-dropdown-popover-item");
-        this.moneyInput = page.locator("div.input-with-label input");
-        this.currencyItem = page.locator(".tbcx-dropdown-popover-item");
-        this.cards = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__info");
+        this.moneyTransfersNavbar = page.locator(".tbcx-pw-breadcrumbs__item").getByRole(
+                AriaRole.LINK,
+                new Locator.GetByRoleOptions().setName(MONEY_TRANSFERS).setExact(true)
+        );
+        this.dropdownList = page.locator(".tbcx-dropdown-popover");
+        this.currencyInput = page.locator(".input-with-label .input");
+        this.conversionRate = page.locator(".tbcx-pw-exchange-rates-calculator__description");
+        this.swapCurrenciesButton = page.getByRole(AriaRole.BUTTON)
+                .filter(new Locator.FilterOptions().setHasText(SWAP_CURRENCY));
         this.remittanceFeeCalculation = page.getByRole(
                 AriaRole.BUTTON,
                 new Page.GetByRoleOptions().setName(REMITTANCE_FEE)
         );
-        this.swapButton = page.locator("//button[.//tbcx-icon[contains(text(),'swap-alt-outlined')]]");
+        this.countryDropdown = page.getByRole(
+                AriaRole.BUTTON,
+                new Page.GetByRoleOptions().setName(CHOOSE_COUNTRY).setExact(true)
+        );
+        this.cards = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__info");
+        this.providerFees = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__caption");
         this.errorMessage = page.locator(".tbcx-pw-money-transfer-fee-calculator__info");
-        this.navbarMoneyTransfers = page.locator(".tbcx-pw-breadcrumbs__item")
-                .filter(new Locator.FilterOptions().setHasText(MONEY_TRANSFERS));
     }
 
-    public Locator currencyItem(String currency) {
-        return currencyItem = currencyItem.filter(new Locator.FilterOptions().setHasText(currency));
+    public Locator currencyDropdownSelector(String currency) {
+        return currencyDropdownSelectorItem = page.getByRole(
+                AriaRole.BUTTON,
+                new Page.GetByRoleOptions().setName(currency)
+        );
     }
 
-    public Locator countryItem(String country) {
-        return countryItem = countryItem.filter(new Locator.FilterOptions().setHasText(country));
+    public Locator currencySelector(String currency) {
+        return currencySelectorItem = page.locator(".tbcx-dropdown-popover")
+                .getByText(
+                        currency,
+                        new Locator.GetByTextOptions().setExact(true)
+                );
+    }
+
+    public Locator countrySelector(String country) {
+        return page.locator(".tbcx-dropdown-popover-item__title")
+                .getByText(country, new Locator.GetByTextOptions().setExact(true));
     }
 }

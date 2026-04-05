@@ -9,31 +9,29 @@ import ui_dir.pages.CommonPage;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class CommonSteps {
-
     private final CommonPage commonPage;
 
     public CommonSteps(Page page) {
         this.commonPage = new CommonPage(page);
     }
 
-    @Step("Go to Personal")
-    public CommonSteps goToPersonal() {
-        commonPage.personal.hover();
+    @Step("Hover personal button")
+    public CommonSteps hoverPersonalButton() {
+        commonPage.personalButton.hover();
 
         return this;
     }
 
-    @Step("Verify Personal products displayed")
-    public CommonSteps verifyPersonalProductsDisplayed() {
-        commonPage.moneyTransfers.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        assertThat(commonPage.moneyTransfers).isVisible();
+    @Step("Validate personal products list is displayed")
+    public CommonSteps validatePersonalOverlay() {
+        assertThat(commonPage.personalButtonOverlay).isVisible();
 
         return this;
     }
 
-    @Step("Go to Money Transfers")
-    public CommonSteps goToMoneyTransfers() {
-        commonPage.moneyTransfers.click();
+    @Step("Navigate to Money Transfers")
+    public CommonSteps navigateToMoneyTransfers() {
+        commonPage.moneyTransfersLink.click();
 
         return this;
     }

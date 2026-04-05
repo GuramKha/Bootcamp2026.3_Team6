@@ -1,6 +1,8 @@
 package tests.ui;
 
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ui_dir.steps.CommonSteps;
@@ -13,52 +15,56 @@ import static constants.Constants.*;
 @Test(groups = {"E2E - Remittance Fee Calculation - Unsuccessful - CRM-T2"})
 public class RemittanceCalculationUnsuccessful extends BaseTest {
 
-    private HomeSteps homeSteps;
     private CommonSteps commonSteps;
-    private MoneyTransfersSteps moneySteps;
+    private HomeSteps homeSteps;
+    private MoneyTransfersSteps moneyTransfersSteps;
 
     @BeforeClass
     public void setup() {
-        homeSteps = new HomeSteps(page);
         commonSteps = new CommonSteps(page);
-        moneySteps = new MoneyTransfersSteps(page);
+        homeSteps = new HomeSteps(page);
+        moneyTransfersSteps = new MoneyTransfersSteps(page);
 
         page.navigate(TBC_URL);
-        homeSteps.acceptCookies();
+        homeSteps.declineCookies();
     }
 
     @Test(priority = 1, description = "Navigate to Personal Products")
+    @Severity(SeverityLevel.NORMAL)
     public void navigatePersonalProducts() {
         commonSteps
-                .goToPersonal()
-                .verifyPersonalProductsDisplayed();
+                .hoverPersonalButton()
+                .validatePersonalOverlay();
     }
 
     @Test(priority = 2, description = "Choose Money Transfers")
+    @Severity(SeverityLevel.CRITICAL)
     public void navigateMoneyTransfers() {
         commonSteps
-                .goToMoneyTransfers();
+                .navigateToMoneyTransfers();
 
-        moneySteps
-                .verifyMoneyTransfersPageOpened();
+        moneyTransfersSteps
+                .validateMoneyTransfersPageDisplayed();
     }
 
     @Test(priority = 3, description = "Checking the Remittance Fee Calculation to Greece")
+    @Severity(SeverityLevel.CRITICAL)
     public void remittanceFeeForGreece() {
-        moneySteps
+        moneyTransfersSteps
                 .openRemittanceFeeCalculation()
-                .openCurrencyOutputDropdown()
-                .selectCurrencyOutput(EUR_STRING)
-                .enterAmount(faker.getRandomNumber(200,500))
+                .selectCurrencyDropdown(GEL_STRING)
+                .selectCurrency(EUR_STRING)
+                .enterAmount(faker.getRandomNumber(50,150))
                 .openCountryDropdown()
                 .selectCountry(GREECE)
                 .verifyProvidersDisplayed();
     }
 
     @Test(priority = 4, description = "Checking the Remittance Fee Calculation to Greece with incorrect format")
+    @Severity(SeverityLevel.NORMAL)
     public void invalidAmountValidation() {
-        moneySteps
+        moneyTransfersSteps
                 .enterInvalidAmount(INVALID_INPUT)
-                .verifyErrorMessage();
+                .verifyErrorMessage(ERROR);
     }
 }

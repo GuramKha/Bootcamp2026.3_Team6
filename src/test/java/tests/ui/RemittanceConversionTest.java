@@ -1,6 +1,8 @@
 package tests.ui;
 
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ui_dir.steps.CommonSteps;
@@ -13,58 +15,62 @@ import static constants.Constants.*;
 @Test(groups = {"E2E - Remittance Conversion - CRM-T1"})
 public class RemittanceConversionTest extends BaseTest {
 
-    private HomeSteps homeSteps;
     private CommonSteps commonSteps;
-    private MoneyTransfersSteps moneySteps;
+    private HomeSteps homeSteps;
+    private MoneyTransfersSteps moneyTransfersSteps;
 
     @BeforeClass
     public void setup() {
-        homeSteps = new HomeSteps(page);
         commonSteps = new CommonSteps(page);
-        moneySteps = new MoneyTransfersSteps(page);
+        homeSteps = new HomeSteps(page);
+        moneyTransfersSteps = new MoneyTransfersSteps(page);
 
         page.navigate(TBC_URL);
-        homeSteps.acceptCookies();
+        homeSteps.declineCookies();
     }
 
     @Test(priority = 1, description = "Navigate to Personal Products")
+    @Severity(SeverityLevel.NORMAL)
     public void navigatePersonalProducts() {
         commonSteps
-                .goToPersonal()
-                .verifyPersonalProductsDisplayed();
+                .hoverPersonalButton()
+                .validatePersonalOverlay();
     }
 
     @Test(priority = 2, description = "Choose Money Transfers")
+    @Severity(SeverityLevel.CRITICAL)
     public void navigateMoneyTransfers() {
-
         commonSteps
-                .goToMoneyTransfers();
+                .navigateToMoneyTransfers();
 
-        moneySteps
-                .verifyMoneyTransfersPageOpened();
+        moneyTransfersSteps
+                .validateMoneyTransfersPageDisplayed();
     }
 
     @Test(priority = 3, description = "Currency conversion from GBP to USD Remittance Conversion")
+    @Severity(SeverityLevel.BLOCKER)
     public void conversionGBPToUSD() {
-        moneySteps
-                .enterAmount(faker.getRandomNumber(100,1000))
-                .openCurrencyInputDropdown()
-                .selectCurrencyInput(GBP_STRING)
-                .openCurrencyOutputDropdown()
-                .selectCurrencyOutput(USD_STRING)
+        moneyTransfersSteps
+                .enterAmount(faker.getRandomNumber(10,100))
+                .selectCurrencyDropdown(USD_STRING)
+                .selectCurrency(GBP_STRING)
+                .selectCurrencyDropdown(GEL_STRING)
+                .selectCurrency(USD_STRING)
                 .verifyConversion();
     }
 
     @Test(priority = 4, description = "Conversion of the increased amount from GBP to USD Remittance Conversion")
+    @Severity(SeverityLevel.CRITICAL)
     public void conversionOfLargeAmount() {
-        moneySteps
-                .enterAmount(faker.getRandomNumber(5000,9000))
+        moneyTransfersSteps
+                .enterAmount(faker.getRandomNumber(200,300))
                 .verifyConversion();
     }
 
     @Test(priority = 5, description = "Currency conversion for the same amount from USD to GBP Remittance Conversion")
+    @Severity(SeverityLevel.CRITICAL)
     public void currencySwap() {
-        moneySteps
+        moneyTransfersSteps
                 .swapCurrencies()
                 .verifyConversion();
     }

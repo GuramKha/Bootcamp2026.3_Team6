@@ -14,43 +14,43 @@ import static constants.Constants.*;
 @Test(groups = {"E2E - Remittance Fee Calculation for minimum and maximum amounts -  Edge case - CRM-T3"})
 public class RemittanceCalculationEdgeTest extends BaseTest {
 
-    private HomeSteps homeSteps;
     private CommonSteps commonSteps;
-    private MoneyTransfersSteps moneySteps;
+    private HomeSteps homeSteps;
+    private MoneyTransfersSteps moneyTransfersSteps;
 
     @BeforeClass
     public void setup() {
-        homeSteps = new HomeSteps(page);
         commonSteps = new CommonSteps(page);
-        moneySteps = new MoneyTransfersSteps(page);
+        homeSteps = new HomeSteps(page);
+        moneyTransfersSteps = new MoneyTransfersSteps(page);
 
         page.navigate(TBC_URL);
-        homeSteps.acceptCookies();
+        homeSteps.declineCookies();
     }
 
     @Test(priority = 1, description = "Navigate to Personal Products")
     public void navigatePersonalProducts() {
         commonSteps
-                .goToPersonal()
-                .verifyPersonalProductsDisplayed();
+                .hoverPersonalButton()
+                .validatePersonalOverlay();
     }
 
     @Test(priority = 2, description = "Choose Money Transfers")
     public void navigateMoneyTransfers() {
         commonSteps
-                .goToMoneyTransfers();
+                .navigateToMoneyTransfers();
 
-        moneySteps
-                .verifyMoneyTransfersPageOpened();
+        moneyTransfersSteps
+                .validateMoneyTransfersPageDisplayed();
     }
 
     @Test(priority = 3, description = "Checking the Remittance Fee Calculation to United States for minimum amount")
     public void minAmountValidation() {
-        moneySteps
+        moneyTransfersSteps
                 .openRemittanceFeeCalculation()
                 .enterAmount(MIN_INPUT)
-                .openCurrencyOutputDropdown()
-                .selectCurrencyOutput(USD_STRING)
+                .selectCurrencyDropdown(GEL_STRING)
+                .selectCurrency(USD_STRING)
                 .openCountryDropdown()
                 .selectCountry(USA)
                 .verifyProvidersDisplayed();
@@ -58,7 +58,7 @@ public class RemittanceCalculationEdgeTest extends BaseTest {
 
     @Test(priority = 4, description = "Checking the Remittance Fee Calculation to United States for maximum amount")
     public void maxAmountValidation() {
-        moneySteps
+        moneyTransfersSteps
                 .openRemittanceFeeCalculation()
                 .enterAmount(MAX_AMOUNT)
                 .verifyProvidersDisplayed();
