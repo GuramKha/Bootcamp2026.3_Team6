@@ -29,6 +29,7 @@ public class MoneyTransfersPage {
         this.countryDropDown = page.locator(".tbcx-dropdown-selector button.tbcx-field").filter(new Locator.FilterOptions().setHasText(CHOOSE_COUNTRY));
         this.countryItem = page.locator(".tbcx-dropdown-popover-item");
         this.moneyInput = page.locator("div.input-with-label input");
+        this.currencyItem = page.locator(".tbcx-dropdown-popover-item");
         this.cards = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__info");
         this.remittanceFeeCalculation = page.getByRole(
                 AriaRole.BUTTON,
@@ -41,6 +42,10 @@ public class MoneyTransfersPage {
     }
 
     public Locator currencyItem(String currency) {
-        return currencyItem = page.locator(".tbcx-dropdown-popover-item").filter(new Locator.FilterOptions().setHasText(currency));
+        return currencyItem = currencyItem.filter(new Locator.FilterOptions().setHasText(currency));
+    }
+
+    public Locator countryItem(String country) {
+        return countryItem = countryItem.filter(new Locator.FilterOptions().setHasText(country));
     }
 }

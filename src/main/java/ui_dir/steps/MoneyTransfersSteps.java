@@ -71,9 +71,8 @@ public class MoneyTransfersSteps {
     public MoneyTransfersSteps selectCurrencyOutput(String currency) {
         logger.info("Selecting output currency: " + currency);
 
-        Locator currencyOption = moneyTransfersPage.currencyItem(currency);
-        currencyOption.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        currencyOption.click(new Locator.ClickOptions().setForce(true));
+        moneyTransfersPage.currencyItem(currency).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        moneyTransfersPage.currencyItem(currency).click(new Locator.ClickOptions().setForce(true));
 
         return this;
     }
@@ -134,9 +133,7 @@ public class MoneyTransfersSteps {
     public MoneyTransfersSteps selectCountry(String country) {
         logger.info("Selecting country: " + country);
 
-        moneyTransfersPage.countryItem
-                .filter(new Locator.FilterOptions().setHasText(country))
-                .click();
+        moneyTransfersPage.countryItem(country).click();
 
         return this;
     }
