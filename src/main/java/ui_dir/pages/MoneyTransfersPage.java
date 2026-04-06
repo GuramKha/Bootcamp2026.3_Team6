@@ -18,7 +18,6 @@ public class MoneyTransfersPage {
             remittanceFeeCalculation,
             countryDropdown,
             cards,
-            providerFees,
             errorMessage;
 
     public MoneyTransfersPage(Page page) {
@@ -40,8 +39,7 @@ public class MoneyTransfersPage {
                 AriaRole.BUTTON,
                 new Page.GetByRoleOptions().setName(CHOOSE_COUNTRY).setExact(true)
         );
-        this.cards = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__info");
-        this.providerFees = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards .tbcx-pw-card__caption");
+        this.cards = page.locator(".tbcx-pw-money-transfer-fee-calculator__cards");
         this.errorMessage = page.locator(".tbcx-pw-money-transfer-fee-calculator__info");
     }
 
