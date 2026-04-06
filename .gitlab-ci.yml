@@ -123,7 +123,7 @@ generate-allure-report:
     - cp -r target/allure-results-firefox/* target/allure-results-merged/ || true
     - cp -r target/allure-results-webkit/* target/allure-results-merged/ || true
     - cp -r target/allure-results-api/* target/allure-results-merged/ || true
-    - cp -r target/allure-results-performance/* target/allure-results-merged/
+    - cp -r target/allure-results-performance/* target/allure-results-merged/ || true
     - allure generate target/allure-results-merged --clean -o target/allure-report
   artifacts:
     when: always
