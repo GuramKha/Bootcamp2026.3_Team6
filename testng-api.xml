@@ -3,15 +3,9 @@
 
 <suite name="Team6Suite" verbose="1" parallel="classes" thread-count="2">
 
-    <test name="API Tests" parallel="classes" thread-count="2">
+    <test name="API Tests">
         <classes>
-
-        </classes>
-    </test>
-
-    <test name="UI Tests" parallel="classes" thread-count="2">
-        <classes>
-
+            <class name="tests.api.MoneyTransferApiScenarioTest"/>
         </classes>
     </test>
 

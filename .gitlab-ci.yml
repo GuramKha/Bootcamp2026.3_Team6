@@ -1,4 +1,4 @@
-image: maven:3.9.14-eclipse-temurin-21
+image: mcr.microsoft.com/playwright/java:v1.57.0-noble
 
 workflow:
   rules:
@@ -11,67 +11,121 @@ workflow:
     - when: never
 
 stages:
-  - tests
+  - tests-chromium
+  - tests-firefox
+  - tests-webkit
+  - tests-api
+  - tests-performance
   - report
   - deploy
 
-cache:
-  key: "$CI_COMMIT_REF_SLUG"
-  paths:
-    - .m2/repository
-    - allure-history/
-
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Xmx512m -XX:+UseG1GC"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   CI: "true"
 
-execute-tests:
-  stage: tests
+.test_base: &test_base
+  retry:
+    max: 2
+    when: script_failure
   allow_failure: true
-  before_script:
-    - apt-get update -qq && apt-get install -y wget curl gnupg unzip
-
-    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
-    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-    - apt-get update -qq && apt-get install -y google-chrome-stable
-    - google-chrome --version
-
+  cache:
+    key: "maven-$BROWSER"
+    paths:
+      - .m2/repository
   script:
-    - mvn clean test -Dsurefire.failIfNoSpecifiedTests=false
-
+    - mvn $MAVEN_CLI_OPTS test -T 1 -Dsurefire.failIfNoSpecifiedTests=false -Dsurefire.suiteXmlFiles=testng-$BROWSER.xml -Dallure.results.directory=target/allure-results-$BROWSER
   artifacts:
     when: always
     paths:
-      - target/allure-results/
+      - target/allure-results-$BROWSER/
       - target/surefire-reports/
     reports:
       junit: target/surefire-reports/TEST-*.xml
     expire_in: 7 days
 
+execute-tests-chromium:
+  stage: tests-chromium
+  <<: *test_base
+  variables:
+    BROWSER: chromium
+
+execute-tests-firefox:
+  stage: tests-firefox
+  <<: *test_base
+  variables:
+    BROWSER: firefox
+
+execute-tests-webkit:
+  stage: tests-webkit
+  <<: *test_base
+  variables:
+    BROWSER: webkit
+
+execute-tests-api:
+  stage: tests-api
+  retry:
+    max: 2
+    when: script_failure
+  allow_failure: true
+  cache:
+    key: "maven-api"
+    paths:
+      - .m2/repository
+  script:
+    - mvn $MAVEN_CLI_OPTS test -Dsurefire.failIfNoSpecifiedTests=false -Dsurefire.suiteXmlFiles=testng-api.xml -Dallure.results.directory=target/allure-results-api
+  artifacts:
+    when: always
+    paths:
+      - target/allure-results-api/
+      - target/surefire-reports/
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+    expire_in: 7 days
+
+execute-tests-performance:
+  stage: tests-performance
+  retry:
+    max: 2
+    when: script_failure
+  image:
+    name: grafana/k6:latest
+    entrypoint: [""]
+  script:
+    - mkdir -p target/allure-results-performance
+    - k6 run $CI_PROJECT_DIR/performance/tests/Fee.js || true
+    - k6 run $CI_PROJECT_DIR/performance/tests/Rate.js || true
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - target/allure-results-performance/
+    expire_in: 7 days
+
 generate-allure-report:
   stage: report
+  image: eclipse-temurin:21-jre-jammy
   allow_failure: true
   dependencies:
-    - execute-tests
+    - execute-tests-chromium
+    - execute-tests-firefox
+    - execute-tests-webkit
+    - execute-tests-api
+    - execute-tests-performance
 
   before_script:
     - apt-get update -qq && apt-get install -y wget
     - wget -q https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
     - tar -xzf allure-2.27.0.tgz -C /opt/
     - ln -s /opt/allure-2.27.0/bin/allure /usr/local/bin/allure
-
   script:
-    - |
-      if [ -d "allure-history" ]; then
-        mkdir -p target/allure-results/history
-        cp -r allure-history/* target/allure-results/history || true
-      fi
-
-    - allure generate ./target/allure-results --clean -o target/allure-report
-
-    - mkdir -p allure-history
-    - cp -r target/allure-report/history/* allure-history/ || true
-
+    - mkdir -p target/allure-results-merged
+    - cp -r target/allure-results-chromium/* target/allure-results-merged/ || true
+    - cp -r target/allure-results-firefox/* target/allure-results-merged/ || true
+    - cp -r target/allure-results-webkit/* target/allure-results-merged/ || true
+    - cp -r target/allure-results-api/* target/allure-results-merged/ || true
+    - cp -r target/allure-results-performance/* target/allure-results-merged/ || true
+    - allure generate target/allure-results-merged --clean -o target/allure-report
   artifacts:
     when: always
     paths:
