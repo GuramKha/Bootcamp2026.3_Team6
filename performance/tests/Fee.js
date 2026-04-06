@@ -35,6 +35,6 @@ export default function () {
 export function handleSummary(data) {
     return {
         'stdout': textSummary(data, { indent: ' ', enableColors: true }),
-        'target/allure-results-performance/rate-report.xml': jUnit(data),
+        'target/allure-results-performance/fees-report.xml': jUnit(data),
     };
 }

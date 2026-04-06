@@ -11,7 +11,8 @@ workflow:
     - when: never
 
 stages:
-  - tests-ui
+  - tests-chromium
+  - tests-firefox
   - tests-webkit
   - tests-api
   - tests-performance
@@ -44,13 +45,13 @@ variables:
     expire_in: 7 days
 
 execute-tests-chromium:
-  stage: tests-ui
+  stage: tests-chromium
   <<: *test_base
   variables:
     BROWSER: chromium
 
 execute-tests-firefox:
-  stage: tests-ui
+  stage: tests-firefox
   <<: *test_base
   variables:
     BROWSER: firefox
