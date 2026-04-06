@@ -86,34 +86,34 @@ amount to a chosen destination country.
 |--------|-----------------------------------------------------------------------|-------------|
 | CRM-T1 | Remittance Conversion                                                 | SCENARIO    |
 | CRM-T2 | Remittance Fee Calculation – Unsuccessful                             | SCENARIO    |
-| CRM-T3 | Remittance Fee Calculation for minimum and maximum amounts – Edge case | SCENARIO   |
+| CRM-T3 | Remittance Fee Calculation  – Edge case                               | SCENARIO    |
 | CRM-T4 | Money Transfer – API Testing                                          | SCENARIO    |
 | CRM-T5 | Remittance Fee Calculation With Random Data (K6)                      | PERFORMANCE |
 | CRM-T6 | Rate Conversion With Random Data & Currencies (K6)                    | PERFORMANCE |
 
 **CRM-T1 · Remittance Conversion**
 Verifies that entering an amount and selecting currencies returns the correct
-converted value based on the displayed rate. Includes swap direction check.
+converted value based on the displayed rate.
 
 **CRM-T2 · Remittance Fee Calculation – Unsuccessful**
-Verifies that submitting the fee calculator without an amount or country
-shows the validation message: *"Please enter the amount and select the country."*
+Verifies  that the system does not calculate an amount when an invalid format is entered.
+It should display the correct error message:*"Please enter the amount and select the country."*
+and ensure the website remains functional.
 
 **CRM-T3 · Remittance Fee Calculation – Edge Case**
-Verifies correct fee calculation at the minimum and maximum allowed send amounts,
-and graceful handling of out-of-range values.
+Verifies correct fee calculation at the minimum and maximum allowed send amounts.
 
 **CRM-T4 · Money Transfer – API Testing**
-Validates the rate conversion and fee calculation API endpoints for correct
-responses on valid inputs and appropriate error codes on invalid ones.
+verify that the correct companies and the correct number of companies are returned
+in the response for the sent currencies and amount.
 
 **CRM-T5 · Remittance Fee Calculation With Random Data (K6)**
-Load test for the fee calculation API with randomised amounts and countries.
-Threshold: p95 response time within limit, error rate < 1%.
+Validate that  /moneyTransfer/fees API sustains performance and reliability under
+10 concurrent users over 60-second load period.
 
 **CRM-T6 · Rate Conversion With Random Data & Currencies (K6)**
-Load test for the conversion API with random currency pairs and amounts.
-Threshold: p95 response time within limit, error rate < 1%.
+Validate that /exchangeRates/getMoneyTransferRate API sustains performance
+and reliability under 40 concurrent users over 60 seconds.
 
 ---
 ## 7. Run Instructions
