@@ -13,7 +13,7 @@ import static constants.Constants.*;
 
 @Feature("Money Transfers")
 @Test(groups = {"E2E - Remittance Fee Calculation - Unsuccessful - CRM-T2"})
-public class RemittanceCalculationUnsuccessful extends BaseTest {
+public class RemittanceCalculationUnsuccessfulTest extends BaseTest {
 
     private CommonSteps commonSteps;
     private HomeSteps homeSteps;

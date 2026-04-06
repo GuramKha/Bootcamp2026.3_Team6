@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { CONFIG } from '../data/Constants.js';
 import { buildRateScenario } from '../helpers/RateScenario.js';
-
+import { jUnit, textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 
 export const options = {
     stages: [
@@ -32,4 +32,11 @@ export default function () {
     });
 
     sleep(CONFIG.THINK_TIME);
+}
+
+export function handleSummary(data) {
+    return {
+        'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+        'target/allure-results-performance/rate-report.xml': jUnit(data),
+    };
 }

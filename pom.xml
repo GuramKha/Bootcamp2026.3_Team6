@@ -17,6 +17,7 @@
         <testng.version>7.11.0</testng.version>
         <playwright.version>1.57.0</playwright.version>
         <rest-assured.version>5.5.6</rest-assured.version>
+
         <jackson-datatype-jsr310.version>2.20.0</jackson-datatype-jsr310.version>
         <jackson-databind-nullable.version>0.2.7</jackson-databind-nullable.version>
         <lombok.version>1.18.42</lombok.version>
@@ -27,6 +28,8 @@
         <slfj.version>2.0.16</slfj.version>
         <net-faker.version>2.5.3</net-faker.version>
         <aspectj.version>1.9.21</aspectj.version>
+
+        <suiteXmlFile>testng-chromium.xml</suiteXmlFile>
     </properties>
 
     <dependencies>
@@ -142,7 +145,7 @@
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>

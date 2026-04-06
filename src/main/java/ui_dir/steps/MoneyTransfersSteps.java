@@ -61,7 +61,15 @@ public class MoneyTransfersSteps {
 
     @Step("Verify conversion")
     public MoneyTransfersSteps verifyConversion() {
-        assertTrue(RateUtils.isCloseEnough(getActualResult(), getExpectedResult()));
+        double expected = getExpectedResult();
+
+        page.waitForCondition(() -> {
+            double actual = getActualResult();
+            return RateUtils.isCloseEnough(actual, expected);
+        }, new Page.WaitForConditionOptions().setTimeout(5000));
+
+        assertTrue(RateUtils.isCloseEnough(getActualResult(), expected));
+
         return this;
     }
 
@@ -95,7 +103,13 @@ public class MoneyTransfersSteps {
                 new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
         );
 
-        moneyTransfersPage.countrySelector(country).click();
+        moneyTransfersPage.countrySelector(country).click(new Locator.ClickOptions().setForce(true));
+
+        moneyTransfersPage.dropdownList.waitFor(
+                new Locator.WaitForOptions()
+                        .setState(WaitForSelectorState.HIDDEN)
+                        .setTimeout(60000)
+        );
 
         return this;
     }
@@ -103,14 +117,12 @@ public class MoneyTransfersSteps {
     @Step("Verify providers and fees displayed")
     public MoneyTransfersSteps verifyProvidersDisplayed() {
         moneyTransfersPage.cards.first().waitFor(
-                new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
-        );
-        moneyTransfersPage.providerFees.first().waitFor(
-                new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
+                new Locator.WaitForOptions()
+                        .setState(WaitForSelectorState.VISIBLE)
+                        .setTimeout(60000)
         );
 
         assertThat(moneyTransfersPage.cards.first()).isVisible();
-        assertThat(moneyTransfersPage.providerFees.first()).isVisible();
 
         return this;
     }

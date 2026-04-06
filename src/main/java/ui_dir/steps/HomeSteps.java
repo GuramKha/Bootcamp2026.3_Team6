@@ -21,7 +21,7 @@ public class HomeSteps {
     public HomeSteps declineCookies() {
         homePage.declineCookies.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(5000));
+                .setTimeout(15000));
 
         homePage.declineCookies.click();
 

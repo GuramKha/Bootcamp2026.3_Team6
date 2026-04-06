@@ -26,12 +26,12 @@ public class BaseTest {
     public void setUp(String browserName) {
         playwright = Playwright.create();
 
+        browserNameLower = browserName.toLowerCase();
+
         boolean isCI = "true".equals(System.getenv("CI"));
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(isCI);
 
-        browserNameLower = browserName.toLowerCase();
-
-        if (isCI) {
+        if (isCI && !browserNameLower.equals("webkit")) {
             launchOptions.setArgs(List.of(
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
@@ -39,11 +39,11 @@ public class BaseTest {
             ));
         }
 
-        if (browserNameLower.equals("firefox")) {
-            browser = playwright.firefox().launch(launchOptions);
-        } else {
-            browser = playwright.chromium().launch(launchOptions);
-        }
+        browser = switch (browserNameLower) {
+            case "firefox" -> playwright.firefox().launch(launchOptions);
+            case "webkit" -> playwright.webkit().launch(launchOptions);
+            default -> playwright.chromium().launch(launchOptions);
+        };
 
         browserContext = browser.newContext(
                 new Browser.NewContextOptions().setViewportSize(1920, 1080)
